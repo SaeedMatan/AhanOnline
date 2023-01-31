@@ -70,4 +70,6 @@ from(
 ) s;
 
 --section7
-https://stackoverflow.com/questions/3309405/tough-t-sql-to-display-org-chart-hierarchy-recursion
+/*this question is so amazing! I can't solve it but 
+I searched about it and found a content on Stackoverflow.com on how to display an organization chart.    
+https://stackoverflow.com/questions/3309405/tough-t-sql-to-display-org-chart-hierarchy-recursion */
