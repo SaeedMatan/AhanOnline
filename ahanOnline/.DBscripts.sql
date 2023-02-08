@@ -12,10 +12,14 @@ insert into Products(name)
 select distinct Product from [dbo].[Sales$] where Product not in (select [name] from Products)
 
 --converting data of managers
-insert into managers(name)
-select distinct manager
+insert into managers
+select distinct [manager id], manager
 from [dbo].[organizationchart$]
 where manager not in (select [name] from managers) and manager <> 'NULL'
+
+/* correcting mistake #1
+update managers
+set id = [manager id] from organizationchart$ where managers.name = organizationchart$.manager*/
 
 --converting data of Sales
 insert into Sales(
@@ -29,12 +33,26 @@ insert into Sales(
 select s.OrderID, c.id, p.id, s.date, s.Quantity, s.UnitPrice from [dbo].[Sales$] s 
 join Customers c on s.Customer = c.name
 join Products p on s.Product = p.name
+/* correcting
+where OrderID not in (select OrderID from Sales)*/
 
 --converting data of SaleProfit
 insert into SaleProfit(ProductId,ProfitRatio)
 select p.id, sp.ProfitRatio from [dbo].[SalesProfit$] sp
-join [dbo].[Products] p on sp.Product = p.name
-
+join [dbo].[Products] p on sp.Product = p.name;
+GO
 insert into SaleProfit(ProductId,ProfitRatio)
-select DISTINCT id, 0.1 from Products where id not in (select id from SaleProfit)
+select DISTINCT id, 0.1 from Products where id not in (select id from SaleProfit);
+GO
 
+/* optimizing query above 
+delete from saleprofit;
+DBCC CHECKIDENT (saleprofit, RESEED, 0);
+insert into SaleProfit(ProductId,ProfitRatio)
+select p.id, isnull(sp.ProfitRatio,0.1) from [dbo].[SalesProfit$] sp
+right join [dbo].[Products] p on sp.Product = p.name*/
+
+-- converting data of OrganizationChart
+insert into OrganizationChart(name,managerId)
+select [name] ,[Manager Id] from [dbo].[organizationchart$];
+GO

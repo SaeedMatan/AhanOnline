@@ -1,6 +1,9 @@
+/* This code is not needed.
+
+
 --create a DB called new and three table called Sales, SaleProfit, OrgChart
-CREATE DATABASE new
-USE new
+CREATE DATABASE new;
+USE new;
 CREATE TABLE Sales(
 		SalesID int NOT NULL IDENTITY(1,1),
 		OrderID int NOT NULL,
@@ -27,7 +30,7 @@ CREATE TABLE OrgChart(
 		manager nvarchar(50),
 		ManagerId tinyint
 		);
-
+*/
 
 -- section1
 SELECT SUM(Quantity*UnitPrice) AS TotalSales
@@ -62,7 +65,7 @@ from Sales s
 join SaleProfit sp on s.ProductId = sp.ProductId;
 
 --section6
-select SUM(s.CountOfCust)
+select SUM(s.CountOfCust) AS SUMofCustomers
 from(
 	select count(distinct CustomerId) AS CountOfCust, date
 	from Sales
